@@ -36,6 +36,8 @@ function Statuses({user}) {
         
     </div>
 }
+// fonction qui sert a afficher chaque status on utilisant react.memo 
+//pour eviter le rendu a chaque iteration de status
 
 const Status = React.memo(({user, status, onDelete, canEdit}) => {
 
@@ -44,14 +46,18 @@ const Status = React.memo(({user, status, onDelete, canEdit}) => {
     const { comments: comments, load, setComments: setComments, loading} = useCommentsFetch
     ('/comments/status/' + status.id)
 
+    // rendu le status apres la suppression
+
     const onDeleteCallback = useCallback(() => {
         onDelete(status)
     }, [status])
 
+    // Ajouter d'un commentaire
     const addComment = useCallback(comment => {
         setComments(comments => [comment, ...comments])
     }, [])
 
+     // Suppression d'un commentaire
     const deleteComment = useCallback(comment => {
         setComments(comments => comments.filter(c => c !== comment))
     }, [])
@@ -62,6 +68,8 @@ const Status = React.memo(({user, status, onDelete, canEdit}) => {
 
     
     const {loading: loadingDelete, load: callDelete}   = useFetch('/statuses/' + status.id, 'DELETE', onDeleteCallback)
+
+    // retourne l'affichage d'un status avec ses commentaire
 
     return <div className="container">
         <div  key={status.id} className="row justify-content-center mb-3">
@@ -99,7 +107,7 @@ const Status = React.memo(({user, status, onDelete, canEdit}) => {
         </div>
     })
 
-
+// fonction pour afficher le formulaire d'un status
 
 const  StatusForm = React.memo(({user, status = null, onStatus , onCancel = null}) => {
     // Variables

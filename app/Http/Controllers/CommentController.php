@@ -31,10 +31,7 @@ class CommentController extends Controller
     public function index(Request $request, Status $status)
     {
        
-        //$comments  = Comment::with('status','user')->get();
         $comments = $status->comments()->orderBy('created_at', 'desc')->with('user')->get();
-
-         //$comments = Status::with('comments')->orderBy('created_at', 'desc')->get();
        
 		// return json response
 		return response()->json([
